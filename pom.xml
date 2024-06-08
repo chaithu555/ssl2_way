@@ -29,7 +29,7 @@
 				<configuration>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>4.6.0</muleVersion>
+						<muleVersion>4.4.0</muleVersion>
 						<username>crusaders</username>
 						<password>Apic@123</password>
 						<applicationName>ssl</applicationName>
