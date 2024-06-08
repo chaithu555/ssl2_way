@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_server" doc:name="HTTP Listener config" doc:id="224596c8-71f0-4f8e-8f48-2fdc8abae453" >
+		<http:listener-connection protocol="HTTPS" host="localhost" port="443" >
+			<tls:context >
+				<tls:trust-store path="server-truststore.jks" password="123456" type="jks" />
+				<tls:key-store type="jks" path="server-Keystore.jks" alias="mule-server" keyPassword="123456" password="123456" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_client" doc:name="HTTP Listener config" doc:id="71d0b819-a6bd-42aa-b454-0fbe93df2d83" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_client" doc:name="HTTP Request configuration" doc:id="1bd5aa4a-398a-48cc-a857-b78292a26f9b" >
+		<http:request-connection protocol="HTTPS" host="localhost" port="443" >
+			<tls:context >
+				<tls:trust-store path="client-truststore.jks" password="123456" type="jks" />
+				<tls:key-store type="jks" path="client-Keystore.jks" alias="mule-client" keyPassword="123456" password="123456" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<flow name="server" doc:id="dfe36a23-871e-4451-8d91-d6c545123a71" >
+		<http:listener doc:name="Listener" doc:id="9ea6993f-373f-4244-9dfa-7555db5beae3" path="/two_way1" config-ref="HTTP_Listener_server"/>
+		<set-payload value='#["the two way is successfully started"]' doc:name="Set Payload" doc:id="01daad8b-77e3-4952-b84e-758b5ce29f53" />
+		<ee:transform doc:name="Transform Message" doc:id="35b3e22c-859b-4d48-9789-d3a516a5bea3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="client" doc:id="098b2018-241e-448c-83ee-ee829bad91b3" >
+		<http:listener doc:name="Listener" doc:id="c0f958b5-8bec-431e-95f6-031ead7d3303" path="/two_way2" config-ref="HTTP_Listener_client"/>
+		<http:request method="GET" doc:name="Request" doc:id="c892f84d-f679-4f49-8a99-e30fd5af6aaa" config-ref="HTTP_Request_client" path="/two_way1" />
+		<ee:transform doc:name="Transform Message" doc:id="8f52a043-11d3-42d3-916c-56a37a2874dd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
