@@ -30,9 +30,9 @@
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>4.6.0</muleVersion>
-						<username>chaithanya_choppara_20-05-2024</username>
-						<password>Chaithu@516</password>
-						<applicationName>chaithu.ssl</applicationName>
+						<username>crusaders</username>
+						<password>Apic@123</password>
+						<applicationName>ssl</applicationName>
 						<environment>Sandbox</environment>
 						<region>us-east-2</region>
 						<workers>1</workers>
